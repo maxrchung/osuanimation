@@ -72,7 +72,7 @@ class Display:
         scale = self.screen.get_height()/1080.0 * 0.85
 
         self.frameClock = pygame.time.Clock()
-        self.time = 1000
+        self.time = 0
 
         self.hitcircles = []
         for i in range(16):
@@ -91,21 +91,38 @@ class Display:
                     if pygame.get.get_pressed()[K_RALT] or pygame.key.get_pressed()[K_LALT]:
                         self.running = False
 
+        self.time += self.frameClock.tick()
+        print('events',self.time)
+
         for hitcircle in self.hitcircles:
             hitcircle.update()
+
+        self.time += self.frameClock.tick()
+        print('hitcircles update',self.time)
 
     def draw(self):
         for hitcircle in self.hitcircles:
             rect = (hitcircle.bgrect[0]-8, hitcircle.bgrect[1]-8, hitcircle.bgrect[2]+16, hitcircle.bgrect[3]+16)
             self.screen.blit(self.background, rect, rect)
 
+        self.time += self.frameClock.tick()
+        print('background draw',self.time)
+
         for hitcircle in self.hitcircles:
             hitcircle.draw()
 
+        self.time += self.frameClock.tick()
+        print('hitcircles draw',self.time)
+
         pygame.display.update()
+
+        self.time += self.frameClock.tick()
+        print('TOTAL TIME--------------------------------',self.time)
+        print
 
     def run(self):
         while self.running:
+            self.time = 0
             self.update()
             self.draw()
 
