@@ -92,13 +92,13 @@ class Display:
                         self.running = False
 
         self.time += self.frameClock.tick()
-        print('events',self.time)
+        print 'events',self.time
 
         for hitcircle in self.hitcircles:
             hitcircle.update()
 
         self.time += self.frameClock.tick()
-        print('hitcircles update',self.time)
+        print 'hitcircles update',self.time
 
     def draw(self):
         for hitcircle in self.hitcircles:
@@ -106,18 +106,19 @@ class Display:
             self.screen.blit(self.background, rect, rect)
 
         self.time += self.frameClock.tick()
-        print('background draw',self.time)
+        print 'background draw',self.time
 
         for hitcircle in self.hitcircles:
             hitcircle.draw()
 
         self.time += self.frameClock.tick()
-        print('hitcircles draw',self.time)
+        print 'hitcircles draw',self.time
 
         pygame.display.update()
 
         self.time += self.frameClock.tick()
-        print('TOTAL TIME--------------------------------',self.time)
+        print 'TOTAL TIME--------------------------------',self.time
+        print 'FRAMERATE---------------------------------',1000.0/self.time
         print
 
     def run(self):
