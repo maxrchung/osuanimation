@@ -16,8 +16,8 @@ class HitCircle:
         x = 0
         y = 0
         while True:
-            x = (random.random() * (self.screen.get_width()-128))+50
-            y = (random.random() * (self.screen.get_height()-128))+50
+            x = (random.random() * (self.screen.get_width()-128))+64
+            y = (random.random() * (self.screen.get_height()-128))+64
             if (x < 520 or x > 1400):
                 break
             elif y < 100 or y > 980:
@@ -81,11 +81,6 @@ class Display:
         self.background = pygame.image.load('background.png')
         scale = self.screen.get_height()/1080.0 * 0.85
 
-        self.frameClock = pygame.time.Clock()
-        self.time = 0
-        self.average = 0
-        self.averageCounter = 0
-
         self.hitcircles = []
         for i in range(8):
             self.hitcircles.append(HitCircle(pygame.image.load('hitcircle'+str(i%8)+'.png'),self.screen, self))
@@ -103,40 +98,18 @@ class Display:
                     if pygame.get.get_pressed()[K_RALT] or pygame.key.get_pressed()[K_LALT]:
                         self.running = False
 
-        self.time += self.frameClock.tick()
-        print 'events',self.time
-
         for hitcircle in self.hitcircles:
             hitcircle.update()
-
-        self.time += self.frameClock.tick()
-        print 'hitcircles update',self.time
 
     def draw(self):
         for hitcircle in self.hitcircles:
             rect = (hitcircle.bgrect[0]-16, hitcircle.bgrect[1]-16, hitcircle.bgrect[2]+32, hitcircle.bgrect[3]+32)
             self.screen.blit(self.background, rect, rect)
 
-        self.time += self.frameClock.tick()
-        print 'background draw',self.time
-
         for hitcircle in self.hitcircles:
             hitcircle.draw()
 
-        self.time += self.frameClock.tick()
-        print 'hitcircles draw',self.time
-
         pygame.display.update()
-
-        self.time += self.frameClock.tick()
-        print 'TOTAL TIME--------------------------------',self.time
-        print 'FRAMERATE---------------------------------',1000.0/self.time
-        
-        self.average += 1000.0/self.time
-        self.averageCounter += 1
-        
-        print 'AVERAGE FRAMERATE-------------------------',self.average/self.averageCounter
-        print
 
     def run(self):
         while self.running:
