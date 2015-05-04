@@ -6,15 +6,25 @@ class HitCircle:
         self.display = display
         self.image = image
         self.imageBig = self.image.copy()
-        self.image = pygame.transform.scale(self.image, (75, 75))
+        self.image = pygame.transform.smoothscale(self.image, (128, 128))
         self.approachCircle = pygame.image.load('approachcircle.png')
         self.screen = screen
         self.approachClock = pygame.time.Clock()
         self.reset()
 
     def reset(self):
-        self.center = (random.random() * self.screen.get_width(), random.random() * self.screen.get_height())
-        self.pos = (self.center[0]-75/2, self.center[1]-75/2)
+        x = 0
+        y = 0
+        while True:
+            x = (random.random() * (self.screen.get_width()-128))+50
+            y = (random.random() * (self.screen.get_height()-128))+50
+            if (x < 520 or x > 1400):
+                break
+            elif y < 100 or y > 980:
+                break
+            
+        self.center = (x, y)
+        self.pos = (self.center[0]-128/2, self.center[1]-128/2)
         self.approach = 0
         self.wait = 0
         self.waitLimit = random.randint(0, 5000)
@@ -73,9 +83,11 @@ class Display:
 
         self.frameClock = pygame.time.Clock()
         self.time = 0
+        self.average = 0
+        self.averageCounter = 0
 
         self.hitcircles = []
-        for i in range(16):
+        for i in range(8):
             self.hitcircles.append(HitCircle(pygame.image.load('hitcircle'+str(i%8)+'.png'),self.screen, self))
 
         self.screen.blit(self.background, (0,0))
@@ -102,7 +114,7 @@ class Display:
 
     def draw(self):
         for hitcircle in self.hitcircles:
-            rect = (hitcircle.bgrect[0]-8, hitcircle.bgrect[1]-8, hitcircle.bgrect[2]+16, hitcircle.bgrect[3]+16)
+            rect = (hitcircle.bgrect[0]-16, hitcircle.bgrect[1]-16, hitcircle.bgrect[2]+32, hitcircle.bgrect[3]+32)
             self.screen.blit(self.background, rect, rect)
 
         self.time += self.frameClock.tick()
@@ -119,6 +131,11 @@ class Display:
         self.time += self.frameClock.tick()
         print 'TOTAL TIME--------------------------------',self.time
         print 'FRAMERATE---------------------------------',1000.0/self.time
+        
+        self.average += 1000.0/self.time
+        self.averageCounter += 1
+        
+        print 'AVERAGE FRAMERATE-------------------------',self.average/self.averageCounter
         print
 
     def run(self):
