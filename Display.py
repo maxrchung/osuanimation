@@ -13,8 +13,8 @@ class HitCircle:
         self.reset()
 
     def reset(self):
-        x = 0
-        y = 0
+        x = -666
+        y = -666
         while True:
             x = (random.random() * (self.screen.get_width()-128))+64
             y = (random.random() * (self.screen.get_height()-128))+64
@@ -45,7 +45,7 @@ class HitCircle:
                 self.state = "FINISHED"
             elif self.approach > 1000:
                 self.state = "FADINGOUT"
-            elif self.approach > 100:
+            elif self.approach > 200:
                 self.state = "FADEDIN"
 
         if self.state == "FADINGIN":
@@ -55,7 +55,7 @@ class HitCircle:
             self.approachCircleCopy = pygame.transform.smoothscale(self.approachCircle, (transform[0], transform[1]))
             pos = (self.center[0]-self.approachCircleCopy.get_width()/2, self.center[1]-self.approachCircleCopy.get_height()/2)
 
-            alpha = int(self.approach/100.0 * 255)
+            alpha = int(self.approach/200.0 * 255)
             if alpha < 0:
                 alpha = 0
             self.hitCircleCopy = self.image.copy()
