@@ -6,7 +6,7 @@ class HitCircle:
         self.display = display
         self.image = image
         self.imageBig = self.image.copy()
-        self.image = pygame.transform.smoothscale(self.image, (128, 128))
+        self.image = pygame.transform.smoothscale(self.image, (100, 100))
         self.approachCircle = pygame.image.load('approachcircle.png')
         self.screen = screen
         self.approachClock = pygame.time.Clock()
@@ -16,15 +16,15 @@ class HitCircle:
         x = -666
         y = -666
         while True:
-            x = (random.random() * (self.screen.get_width()-128))+64
-            y = (random.random() * (self.screen.get_height()-128))+64
-            if (x < 520 or x > 1400):
+            x = (random.random() * (self.screen.get_width()-100))+50
+            y = (random.random() * (self.screen.get_height()-100))+50
+            if (x < 350 or x > 930):
                 break
-            elif y < 100 or y > 980:
+            elif y < 60 or y > 660:
                 break
             
         self.center = (x, y)
-        self.pos = (self.center[0]-128/2, self.center[1]-128/2)
+        self.pos = (self.center[0]-50, self.center[1]-50)
         self.approach = 0
         self.wait = 0
         self.waitLimit = random.randint(100,1000)
@@ -100,7 +100,7 @@ class Display:
         self.running = True
         pygame.init()
         pygame.mouse.set_visible(False)
-        self.screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode((1280,720), pygame.FULLSCREEN)
         self.background = pygame.image.load('background.png')
 
         self.hitcircles = []
